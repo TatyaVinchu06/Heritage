@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { ArrowLeft, MapPin, Info, Camera, Compass, ZoomIn, ZoomOut, Eye, Navigation } from 'lucide-react';
 
 interface TajMahalStreetViewProps {
@@ -8,225 +8,297 @@ interface TajMahalStreetViewProps {
 
 interface Hotspot {
   id: string;
-  position: { lat: number; lng: number };
+  x: number;
+  y: number;
   title: string;
   description: string;
   details: string[];
 }
 
-const tajMahalHotspots: Hotspot[] = [
+interface Location {
+  id: string;
+  name: string;
+  image: string;
+  hotspots: Hotspot[];
+  connections: { id: string; direction: string; angle: number }[];
+}
+
+const tajMahalLocations: Location[] = [
   {
     id: 'main-gate',
-    position: { lat: 27.173007, lng: 78.042155 },
-    title: 'Main Gate - Darwaza-i-Rauza',
-    description: 'The grand entrance to the Taj Mahal complex',
-    details: [
-      'Built in 1648 from red sandstone',
-      'Features intricate geometric patterns',
-      'Contains verses from the Quran in calligraphy',
-      'The gateway frames the first view of the Taj Mahal'
-    ]
-  },
-  {
-    id: 'main-tomb',
-    position: { lat: 27.173891, lng: 78.042068 },
-    title: 'Main Tomb - Rauza-i-Munawwara',
-    description: 'The iconic white marble mausoleum',
-    details: [
-      'Completed in 1648 after 17 years of construction',
-      'Built by Emperor Shah Jahan for his wife Mumtaz Mahal',
-      'Made from white marble with precious stone inlay',
-      'Perfect example of Mughal architecture',
-      'One of the New Seven Wonders of the World'
-    ]
-  },
-  {
-    id: 'mosque',
-    position: { lat: 27.173454, lng: 78.041455 },
-    title: 'Red Sandstone Mosque',
-    description: 'Western building providing symmetry to the complex',
-    details: [
-      'Built from red sandstone to contrast the white tomb',
-      'Still used for prayer services',
-      'Features three bulbous domes',
-      'Faces Mecca for religious significance'
+    name: 'Main Gate - Darwaza-i-Rauza',
+    image: 'https://images.pexels.com/photos/1583339/pexels-photo-1583339.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop',
+    hotspots: [
+      {
+        id: 'gate-arch',
+        x: 50,
+        y: 40,
+        title: 'Grand Entrance Arch',
+        description: 'The magnificent red sandstone gateway to the Taj Mahal',
+        details: [
+          'Built in 1648 from red sandstone',
+          'Features intricate geometric patterns',
+          'Contains verses from the Quran in calligraphy',
+          'The gateway frames the first view of the Taj Mahal'
+        ]
+      },
+      {
+        id: 'calligraphy',
+        x: 30,
+        y: 35,
+        title: 'Islamic Calligraphy',
+        description: 'Beautiful Arabic inscriptions on the gateway',
+        details: [
+          'Verses from the Quran inscribed in Thuluth script',
+          'Inlaid with black marble on red sandstone',
+          'Welcomes visitors to the "Garden of Paradise"',
+          'Masterpiece of Mughal calligraphic art'
+        ]
+      }
+    ],
+    connections: [
+      { id: 'garden', direction: 'Enter Complex', angle: 0 }
     ]
   },
   {
     id: 'garden',
-    position: { lat: 27.173600, lng: 78.041800 },
-    title: 'Charbagh Garden',
-    description: 'Persian-style formal garden',
-    details: [
-      'Represents the Garden of Paradise from Islamic texts',
-      'Divided into four quadrants by waterways',
-      'Contains cypress trees symbolizing immortality',
-      'Central reflecting pool enhances the tomb\'s beauty'
+    name: 'Charbagh Garden',
+    image: 'https://images.pexels.com/photos/2413613/pexels-photo-2413613.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop',
+    hotspots: [
+      {
+        id: 'central-pool',
+        x: 50,
+        y: 60,
+        title: 'Central Reflecting Pool',
+        description: 'The iconic reflecting pool that mirrors the Taj Mahal',
+        details: [
+          'Creates perfect reflection of the main tomb',
+          'Part of the Persian Charbagh garden design',
+          'Represents the rivers of Paradise in Islamic tradition',
+          'Enhances the visual impact of the monument'
+        ]
+      },
+      {
+        id: 'cypress-trees',
+        x: 25,
+        y: 45,
+        title: 'Cypress Trees',
+        description: 'Symbolic trees representing immortality',
+        details: [
+          'Dark green cypress trees line the pathways',
+          'Symbolize immortality and eternal life',
+          'Provide contrast to the white marble tomb',
+          'Part of the original 17th-century landscaping'
+        ]
+      }
+    ],
+    connections: [
+      { id: 'main-gate', direction: 'Back to Gate', angle: 180 },
+      { id: 'main-tomb', direction: 'To Main Tomb', angle: 0 }
+    ]
+  },
+  {
+    id: 'main-tomb',
+    name: 'Main Tomb - Rauza-i-Munawwara',
+    image: 'https://images.pexels.com/photos/1583339/pexels-photo-1583339.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop',
+    hotspots: [
+      {
+        id: 'main-dome',
+        x: 50,
+        y: 25,
+        title: 'Central Dome',
+        description: 'The iconic bulbous dome of the Taj Mahal',
+        details: [
+          'Height of 35 meters with a brass finial',
+          'Double-shell construction for acoustic properties',
+          'Topped with a lotus design and crescent moon',
+          'Symbol of heavenly paradise in Islamic architecture'
+        ]
+      },
+      {
+        id: 'pietra-dura',
+        x: 40,
+        y: 50,
+        title: 'Pietra Dura Inlay',
+        description: 'Intricate precious stone inlay work',
+        details: [
+          'Semi-precious stones inlaid in white marble',
+          'Floral patterns and Quranic verses',
+          'Includes lapis lazuli, jade, crystal, and turquoise',
+          'Technique perfected by Mughal craftsmen'
+        ]
+      },
+      {
+        id: 'minarets',
+        x: 75,
+        y: 40,
+        title: 'Four Minarets',
+        description: 'Elegant towers flanking the main tomb',
+        details: [
+          'Each minaret is 40 meters tall',
+          'Slightly tilted outward for earthquake protection',
+          'Crowned with chattris (domed pavilions)',
+          'Provide perfect symmetry to the composition'
+        ]
+      }
+    ],
+    connections: [
+      { id: 'garden', direction: 'Back to Garden', angle: 180 },
+      { id: 'mosque', direction: 'To Mosque', angle: 270 }
+    ]
+  },
+  {
+    id: 'mosque',
+    name: 'Red Sandstone Mosque',
+    image: 'https://images.pexels.com/photos/3573383/pexels-photo-3573383.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop',
+    hotspots: [
+      {
+        id: 'prayer-hall',
+        x: 50,
+        y: 45,
+        title: 'Prayer Hall',
+        description: 'Active mosque still used for prayers',
+        details: [
+          'Built from red sandstone to contrast the white tomb',
+          'Faces Mecca for proper prayer orientation',
+          'Features three bulbous domes',
+          'Still used by local Muslim community for prayers'
+        ]
+      },
+      {
+        id: 'mihrab',
+        x: 60,
+        y: 50,
+        title: 'Mihrab (Prayer Niche)',
+        description: 'Ornate niche indicating direction of Mecca',
+        details: [
+          'Beautifully decorated prayer niche',
+          'Points toward Mecca for prayer direction',
+          'Features intricate geometric patterns',
+          'Made from precious marble and stone inlay'
+        ]
+      }
+    ],
+    connections: [
+      { id: 'main-tomb', direction: 'Back to Tomb', angle: 90 }
     ]
   }
 ];
 
-declare global {
-  interface Window {
-    google: any;
-    initMap: () => void;
-  }
-}
-
 export default function TajMahalStreetView({ onBackToHome, onBackToExplorer }: TajMahalStreetViewProps) {
-  const mapRef = useRef<HTMLDivElement>(null);
-  const panoRef = useRef<HTMLDivElement>(null);
-  const [map, setMap] = useState<any>(null);
-  const [panorama, setPanorama] = useState<any>(null);
+  const [currentLocation, setCurrentLocation] = useState<Location>(tajMahalLocations[2]); // Start at main tomb
   const [selectedHotspot, setSelectedHotspot] = useState<Hotspot | null>(null);
-  const [currentLocation, setCurrentLocation] = useState(tajMahalHotspots[1]); // Start at main tomb
+  const [rotation, setRotation] = useState(0);
+  const [zoom, setZoom] = useState(1);
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [showMiniMap, setShowMiniMap] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const initializeMap = () => {
-      if (!window.google || !mapRef.current || !panoRef.current) {
-        setTimeout(initializeMap, 100);
-        return;
-      }
+  const handleMouseDown = (e: React.MouseEvent) => {
+    setIsDragging(true);
+    setDragStart({ x: e.clientX, y: e.clientY });
+  };
 
-      try {
-        // Initialize the map
-        const mapInstance = new window.google.maps.Map(mapRef.current, {
-          center: currentLocation.position,
-          zoom: 16,
-          mapTypeId: 'hybrid'
-        });
-
-        // Initialize the street view panorama
-        const panoInstance = new window.google.maps.StreetViewPanorama(panoRef.current, {
-          position: currentLocation.position,
-          pov: {
-            heading: 34,
-            pitch: 10,
-          },
-          zoom: 1,
-          addressControl: false,
-          panControl: true,
-          zoomControl: false,
-          fullscreenControl: false,
-          motionTracking: false,
-          motionTrackingControl: false
-        });
-
-        // Connect map and panorama
-        mapInstance.setStreetView(panoInstance);
-
-        // Add markers for each hotspot
-        tajMahalHotspots.forEach(hotspot => {
-          const marker = new window.google.maps.Marker({
-            position: hotspot.position,
-            map: mapInstance,
-            title: hotspot.title,
-            icon: {
-              url: 'data:image/svg+xml;base64,' + btoa(`
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-                  <circle cx="16" cy="16" r="12" fill="#FCD34D" stroke="#F59E0B" stroke-width="2"/>
-                  <circle cx="16" cy="16" r="6" fill="#F59E0B"/>
-                </svg>
-              `),
-              scaledSize: new window.google.maps.Size(32, 32)
-            }
-          });
-
-          marker.addListener('click', () => {
-            panoInstance.setPosition(hotspot.position);
-            setCurrentLocation(hotspot);
-          });
-        });
-
-        setMap(mapInstance);
-        setPanorama(panoInstance);
-        setIsLoaded(true);
-
-        // Listen for panorama position changes
-        panoInstance.addListener('position_changed', () => {
-          const position = panoInstance.getPosition();
-          if (position) {
-            // Find the closest hotspot
-            let closestHotspot = tajMahalHotspots[0];
-            let minDistance = calculateDistance(position, closestHotspot.position);
-
-            tajMahalHotspots.forEach(hotspot => {
-              const distance = calculateDistance(position, hotspot.position);
-              if (distance < minDistance) {
-                minDistance = distance;
-                closestHotspot = hotspot;
-              }
-            });
-
-            setCurrentLocation(closestHotspot);
-          }
-        });
-
-      } catch (error) {
-        console.error('Error initializing Google Maps:', error);
-      }
-    };
-
-    // Set up the global callback
-    window.initMap = initializeMap;
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging) return;
     
-    // If Google Maps is already loaded, initialize immediately
-    if (window.google) {
-      initializeMap();
-    }
-
-    return () => {
-      if (window.initMap === initializeMap) {
-        delete window.initMap;
-      }
-    };
-  }, []);
-
-  const calculateDistance = (pos1: any, pos2: { lat: number; lng: number }) => {
-    const lat1 = typeof pos1.lat === 'function' ? pos1.lat() : pos1.lat;
-    const lng1 = typeof pos1.lng === 'function' ? pos1.lng() : pos1.lng;
-    const lat2 = pos2.lat;
-    const lng2 = pos2.lng;
-
-    const R = 6371; // Earth's radius in km
-    const dLat = (lat2 - lat1) * Math.PI / 180;
-    const dLng = (lng2 - lng1) * Math.PI / 180;
-    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-              Math.sin(dLng/2) * Math.sin(dLng/2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-    return R * c;
+    const deltaX = e.clientX - dragStart.x;
+    setRotation(prev => prev + deltaX * 0.5);
+    setDragStart({ x: e.clientX, y: e.clientY });
   };
 
-  const navigateToHotspot = (hotspot: Hotspot) => {
-    if (panorama) {
-      panorama.setPosition(hotspot.position);
-      setCurrentLocation(hotspot);
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const navigateToLocation = (locationId: string) => {
+    const location = tajMahalLocations.find(loc => loc.id === locationId);
+    if (location) {
+      setCurrentLocation(location);
+      setSelectedHotspot(null);
+      setRotation(0);
+      setZoom(1);
     }
   };
 
-  if (!isLoaded) {
-    return (
-      <div className="h-screen bg-gradient-to-br from-amber-900 via-orange-900 to-red-900 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-yellow-400 mx-auto mb-4"></div>
-          <h2 className="text-white text-xl font-bold mb-2">Loading Taj Mahal Street View...</h2>
-          <p className="text-amber-200">Preparing your virtual journey</p>
-        </div>
-      </div>
-    );
-  }
+  const adjustZoom = (delta: number) => {
+    setZoom(prev => Math.max(0.5, Math.min(3, prev + delta)));
+  };
 
   return (
     <div className="h-screen bg-black overflow-hidden relative">
-      {/* Street View Container */}
-      <div 
-        ref={panoRef}
-        className="w-full h-full"
-        style={{ minHeight: '100vh' }}
-      />
+      {/* Main Panoramic View */}
+      <div
+        ref={containerRef}
+        className="w-full h-full relative cursor-grab active:cursor-grabbing"
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseUp}
+      >
+        {/* Panoramic Background */}
+        <div
+          className="absolute inset-0 bg-cover bg-center transition-transform duration-300 ease-out"
+          style={{
+            backgroundImage: `url(${currentLocation.image})`,
+            transform: `translateX(${-rotation}px) scale(${zoom})`,
+            width: '200%',
+            height: '120%',
+            left: '-50%',
+            top: '-10%'
+          }}
+        />
+
+        {/* Hotspots */}
+        {currentLocation.hotspots.map((hotspot) => (
+          <button
+            key={hotspot.id}
+            className="absolute transform -translate-x-1/2 -translate-y-1/2 group z-20"
+            style={{
+              left: `${hotspot.x}%`,
+              top: `${hotspot.y}%`,
+              transform: `translateX(${rotation * 0.3}px) scale(${zoom})`
+            }}
+            onClick={() => setSelectedHotspot(hotspot)}
+          >
+            {/* Pulsing ring */}
+            <div className="absolute inset-0 bg-yellow-400 rounded-full animate-ping opacity-60"></div>
+            
+            {/* Main hotspot */}
+            <div className="relative bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-300 hover:to-orange-400 text-white rounded-full p-3 shadow-2xl transition-all duration-200 transform hover:scale-125 border-2 border-white">
+              <Info className="h-4 w-4" />
+            </div>
+            
+            {/* Tooltip */}
+            <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+              <div className="bg-black/80 text-white text-sm rounded-lg py-2 px-3 whitespace-nowrap shadow-xl backdrop-blur-sm">
+                {hotspot.title}
+                <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-black/80"></div>
+              </div>
+            </div>
+          </button>
+        ))}
+
+        {/* Navigation Arrows */}
+        {currentLocation.connections.map((connection) => (
+          <button
+            key={connection.id}
+            className="absolute top-1/2 transform -translate-y-1/2 bg-black/60 hover:bg-black/80 text-white p-4 rounded-full shadow-2xl transition-all duration-200 hover:scale-110 backdrop-blur-sm border border-white/20 z-20"
+            style={{
+              [connection.angle === 0 ? 'right' : connection.angle === 180 ? 'left' : connection.angle === 90 ? 'top' : 'bottom']: '2rem',
+              ...(connection.angle === 90 && { top: '2rem', left: '50%', transform: 'translateX(-50%)' }),
+              ...(connection.angle === 270 && { bottom: '2rem', left: '50%', transform: 'translateX(-50%)' })
+            }}
+            onClick={() => navigateToLocation(connection.id)}
+          >
+            <div className="flex items-center space-x-2">
+              <Navigation className="h-5 w-5" />
+              <span className="text-sm font-medium">{connection.direction}</span>
+            </div>
+          </button>
+        ))}
+      </div>
 
       {/* Top UI Bar */}
       <div className="absolute top-0 left-0 right-0 bg-gradient-to-b from-black/80 to-transparent p-4 z-30">
@@ -241,7 +313,7 @@ export default function TajMahalStreetView({ onBackToHome, onBackToExplorer }: T
             <div className="bg-black/60 backdrop-blur-sm rounded-lg px-4 py-2 border border-white/20">
               <h1 className="text-white font-bold text-lg flex items-center">
                 <Eye className="h-5 w-5 mr-2 text-yellow-400" />
-                {currentLocation.title}
+                {currentLocation.name}
               </h1>
               <p className="text-amber-200 text-sm">Taj Mahal, Agra</p>
             </div>
@@ -249,49 +321,56 @@ export default function TajMahalStreetView({ onBackToHome, onBackToExplorer }: T
           
           <div className="flex items-center space-x-2">
             <button
-              onClick={() => setSelectedHotspot(currentLocation)}
-              className="bg-black/60 hover:bg-black/80 text-white p-2 rounded-lg transition-colors backdrop-blur-sm border border-white/20"
-            >
-              <Info className="h-5 w-5" />
-            </button>
-            <button
               onClick={() => setShowMiniMap(!showMiniMap)}
               className="bg-black/60 hover:bg-black/80 text-white p-2 rounded-lg transition-colors backdrop-blur-sm border border-white/20"
             >
               <MapPin className="h-5 w-5" />
             </button>
+            <button
+              onClick={() => setRotation(0)}
+              className="bg-black/60 hover:bg-black/80 text-white p-2 rounded-lg transition-colors backdrop-blur-sm border border-white/20"
+            >
+              <Compass className="h-5 w-5" />
+            </button>
           </div>
         </div>
       </div>
 
-      {/* Navigation Panel */}
-      <div className="absolute left-4 top-1/2 transform -translate-y-1/2 space-y-2 z-30">
-        {tajMahalHotspots.map((hotspot, index) => (
-          <button
-            key={hotspot.id}
-            onClick={() => navigateToHotspot(hotspot)}
-            className={`block w-12 h-12 rounded-lg transition-all duration-200 backdrop-blur-sm border border-white/20 ${
-              currentLocation.id === hotspot.id
-                ? 'bg-yellow-500 text-black'
-                : 'bg-black/60 hover:bg-black/80 text-white'
-            }`}
-            title={hotspot.title}
-          >
-            <Navigation className="h-5 w-5 mx-auto" />
-          </button>
-        ))}
+      {/* Zoom Controls */}
+      <div className="absolute right-4 top-1/2 transform -translate-y-1/2 flex flex-col space-y-2 z-30">
+        <button
+          onClick={() => adjustZoom(0.2)}
+          className="bg-black/60 hover:bg-black/80 text-white p-3 rounded-lg transition-colors backdrop-blur-sm border border-white/20"
+        >
+          <ZoomIn className="h-5 w-5" />
+        </button>
+        <button
+          onClick={() => adjustZoom(-0.2)}
+          className="bg-black/60 hover:bg-black/80 text-white p-3 rounded-lg transition-colors backdrop-blur-sm border border-white/20"
+        >
+          <ZoomOut className="h-5 w-5" />
+        </button>
       </div>
 
       {/* Mini Map */}
       {showMiniMap && (
-        <div className="absolute bottom-4 left-4 w-80 h-60 bg-black/80 backdrop-blur-sm rounded-lg border border-white/20 z-30 overflow-hidden">
-          <div className="bg-gradient-to-r from-amber-600 to-orange-600 p-2">
-            <h3 className="text-white font-bold text-sm">Taj Mahal Complex</h3>
+        <div className="absolute bottom-4 left-4 bg-black/80 backdrop-blur-sm rounded-lg p-4 border border-white/20 z-30">
+          <h3 className="text-white font-bold mb-3 text-sm">Taj Mahal Complex</h3>
+          <div className="grid grid-cols-2 gap-2">
+            {tajMahalLocations.map((location) => (
+              <button
+                key={location.id}
+                onClick={() => navigateToLocation(location.id)}
+                className={`text-xs p-2 rounded transition-colors ${
+                  currentLocation.id === location.id
+                    ? 'bg-yellow-500 text-black font-bold'
+                    : 'bg-white/20 text-white hover:bg-white/30'
+                }`}
+              >
+                {location.name.split(' - ')[0]}
+              </button>
+            ))}
           </div>
-          <div 
-            ref={mapRef}
-            className="w-full h-48"
-          />
         </div>
       )}
 
@@ -304,16 +383,12 @@ export default function TajMahalStreetView({ onBackToHome, onBackToExplorer }: T
           </div>
           <div className="flex items-center space-x-2">
             <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
-            <span>Click arrows to move</span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <div className="w-2 h-2 bg-red-400 rounded-full"></div>
-            <span>Use navigation panel</span>
+            <span>Click hotspots for info</span>
           </div>
         </div>
       </div>
 
-      {/* Information Modal */}
+      {/* Hotspot Modal */}
       {selectedHotspot && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50 backdrop-blur-sm">
           <div className="bg-gradient-to-br from-amber-50 to-orange-100 rounded-2xl max-w-2xl w-full shadow-2xl border-2 border-yellow-400/30">
@@ -324,7 +399,7 @@ export default function TajMahalStreetView({ onBackToHome, onBackToExplorer }: T
                   <Camera className="h-6 w-6 text-yellow-300" />
                   <div>
                     <h2 className="text-xl font-bold">{selectedHotspot.title}</h2>
-                    <p className="text-amber-100 text-sm">Taj Mahal Complex</p>
+                    <p className="text-amber-100 text-sm">{currentLocation.name}</p>
                   </div>
                 </div>
                 <button
