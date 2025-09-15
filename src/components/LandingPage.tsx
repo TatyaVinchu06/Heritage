@@ -3,9 +3,10 @@ import { Eye, MapPin, Camera, Clock, Users, Star, ArrowRight, Play } from 'lucid
 
 interface LandingPageProps {
   onStartExploration: () => void;
+  onStartTajMahal: () => void;
 }
 
-export default function LandingPage({ onStartExploration }: LandingPageProps) {
+export default function LandingPage({ onStartExploration, onStartTajMahal }: LandingPageProps) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-red-50">
       {/* Hero Section */}
@@ -52,33 +53,37 @@ export default function LandingPage({ onStartExploration }: LandingPageProps) {
               
               <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 leading-tight mb-6">
                 Explore India's
-                <span className="bg-gradient-to-r from-orange-500 to-red-600 bg-clip-text text-transparent"> Majestic Forts</span>
+                <span className="bg-gradient-to-r from-orange-500 to-red-600 bg-clip-text text-transparent"> Majestic Heritage</span>
               </h1>
               
               <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-                Step into history with our immersive virtual tour. Experience the grandeur of ancient Indian architecture through interactive 360° views, just like Google Street View.
+                Step into history with our immersive virtual tours. Experience the grandeur of ancient Indian architecture through interactive 360° views and real Google Street View.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 mb-8">
+                <button
+                  onClick={onStartTajMahal}
+                  className="bg-gradient-to-r from-amber-500 to-orange-600 text-white px-8 py-4 rounded-xl hover:from-amber-600 hover:to-orange-700 transition-all duration-200 shadow-xl flex items-center justify-center group"
+                >
+                  <Camera className="h-5 w-5 mr-2 group-hover:scale-110 transition-transform" />
+                  Taj Mahal Street View
+                  <ArrowRight className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                </button>
+                
                 <button
                   onClick={onStartExploration}
                   className="bg-gradient-to-r from-orange-500 to-red-600 text-white px-8 py-4 rounded-xl hover:from-orange-600 hover:to-red-700 transition-all duration-200 shadow-xl flex items-center justify-center group"
                 >
                   <Play className="h-5 w-5 mr-2 group-hover:scale-110 transition-transform" />
-                  Begin Virtual Tour
+                  Fort Virtual Tour
                   <ArrowRight className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform" />
-                </button>
-                
-                <button className="border-2 border-orange-300 text-orange-700 px-8 py-4 rounded-xl hover:bg-orange-50 transition-all duration-200 flex items-center justify-center">
-                  <Camera className="h-5 w-5 mr-2" />
-                  View Gallery
                 </button>
               </div>
 
               {/* Stats */}
               <div className="grid grid-cols-3 gap-6">
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-gray-900">4</div>
+                  <div className="text-2xl font-bold text-gray-900">5</div>
                   <div className="text-sm text-gray-600">Locations</div>
                 </div>
                 <div className="text-center">
@@ -86,7 +91,7 @@ export default function LandingPage({ onStartExploration }: LandingPageProps) {
                   <div className="text-sm text-gray-600">Views</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-gray-900">12+</div>
+                  <div className="text-2xl font-bold text-gray-900">16+</div>
                   <div className="text-sm text-gray-600">Hotspots</div>
                 </div>
               </div>
@@ -96,15 +101,15 @@ export default function LandingPage({ onStartExploration }: LandingPageProps) {
             <div className="relative">
               <div className="relative rounded-2xl overflow-hidden shadow-2xl">
                 <img
-                  src="https://images.pexels.com/photos/3573383/pexels-photo-3573383.jpeg?auto=compress&cs=tinysrgb&w=800"
-                  alt="Indian Fort"
+                  src="https://images.pexels.com/photos/1583339/pexels-photo-1583339.jpeg?auto=compress&cs=tinysrgb&w=800"
+                  alt="Taj Mahal"
                   className="w-full h-96 object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                 
                 {/* Play Button Overlay */}
                 <button
-                  onClick={onStartExploration}
+                  onClick={onStartTajMahal}
                   className="absolute inset-0 flex items-center justify-center group"
                 >
                   <div className="bg-white/20 backdrop-blur-sm rounded-full p-6 group-hover:bg-white/30 transition-all duration-200 group-hover:scale-110">
@@ -117,7 +122,7 @@ export default function LandingPage({ onStartExploration }: LandingPageProps) {
               <div className="absolute -top-4 -right-4 bg-white rounded-xl p-4 shadow-lg border border-orange-100">
                 <div className="flex items-center space-x-2">
                   <MapPin className="h-5 w-5 text-orange-500" />
-                  <span className="text-sm font-medium">4 Locations</span>
+                  <span className="text-sm font-medium">Real Street View</span>
                 </div>
               </div>
               
@@ -137,41 +142,41 @@ export default function LandingPage({ onStartExploration }: LandingPageProps) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Immersive Fort Exploration
+              Immersive Heritage Exploration
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Discover the rich history and architectural marvels of Indian forts through cutting-edge virtual reality technology
+              Discover the rich history and architectural marvels of Indian monuments through cutting-edge virtual reality and real Google Street View
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
+            <div className="bg-gradient-to-br from-amber-50 to-orange-50 p-8 rounded-2xl border border-amber-100">
+              <div className="bg-gradient-to-r from-amber-500 to-orange-600 p-3 rounded-xl w-fit mb-6">
+                <Camera className="h-6 w-6 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-4">Real Google Street View</h3>
+              <p className="text-gray-600">
+                Experience authentic Google Street View of the Taj Mahal. Navigate naturally through the actual monument with real panoramic imagery.
+              </p>
+            </div>
+
             <div className="bg-gradient-to-br from-orange-50 to-red-50 p-8 rounded-2xl border border-orange-100">
               <div className="bg-gradient-to-r from-orange-500 to-red-600 p-3 rounded-xl w-fit mb-6">
                 <Eye className="h-6 w-6 text-white" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-4">360° Panoramic Views</h3>
               <p className="text-gray-600">
-                Navigate through the fort just like Google Street View. Drag to look around and explore every corner of these magnificent structures.
-              </p>
-            </div>
-
-            <div className="bg-gradient-to-br from-amber-50 to-orange-50 p-8 rounded-2xl border border-amber-100">
-              <div className="bg-gradient-to-r from-amber-500 to-orange-600 p-3 rounded-xl w-fit mb-6">
-                <MapPin className="h-6 w-6 text-white" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Interactive Hotspots</h3>
-              <p className="text-gray-600">
-                Click on glowing markers to discover fascinating historical facts, architectural details, and cultural significance of each location.
+                Navigate through virtual forts just like Google Street View. Drag to look around and explore every corner of these magnificent structures.
               </p>
             </div>
 
             <div className="bg-gradient-to-br from-red-50 to-pink-50 p-8 rounded-2xl border border-red-100">
               <div className="bg-gradient-to-r from-red-500 to-pink-600 p-3 rounded-xl w-fit mb-6">
-                <Clock className="h-6 w-6 text-white" />
+                <MapPin className="h-6 w-6 text-white" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Rich Historical Content</h3>
+              <h3 className="text-xl font-bold text-gray-900 mb-4">Interactive Hotspots</h3>
               <p className="text-gray-600">
-                Learn about the fascinating history, architectural techniques, and cultural importance of each fort section through detailed descriptions.
+                Click on glowing markers to discover fascinating historical facts, architectural details, and cultural significance of each location.
               </p>
             </div>
           </div>
@@ -187,7 +192,7 @@ export default function LandingPage({ onStartExploration }: LandingPageProps) {
                 Preserving Heritage Through Technology
               </h2>
               <p className="text-lg text-gray-600 mb-6">
-                Our virtual fort explorer brings India's magnificent architectural heritage to your screen. Experience the grandeur of ancient forts, learn about their history, and appreciate the craftsmanship of bygone eras.
+                Our virtual heritage explorer brings India's magnificent architectural heritage to your screen. Experience both simulated and real-world views of ancient monuments, learn about their history, and appreciate the craftsmanship of bygone eras.
               </p>
               <div className="space-y-4">
                 <div className="flex items-center space-x-3">
@@ -200,13 +205,13 @@ export default function LandingPage({ onStartExploration }: LandingPageProps) {
                   <div className="bg-orange-100 p-2 rounded-lg">
                     <Camera className="h-5 w-5 text-orange-600" />
                   </div>
-                  <span className="text-gray-700">High-quality panoramic imagery</span>
+                  <span className="text-gray-700">Real Google Street View integration</span>
                 </div>
                 <div className="flex items-center space-x-3">
                   <div className="bg-orange-100 p-2 rounded-lg">
                     <MapPin className="h-5 w-5 text-orange-600" />
                   </div>
-                  <span className="text-gray-700">Multiple fort locations to explore</span>
+                  <span className="text-gray-700">Multiple heritage locations to explore</span>
                 </div>
               </div>
             </div>
@@ -214,7 +219,7 @@ export default function LandingPage({ onStartExploration }: LandingPageProps) {
             <div className="relative">
               <img
                 src="https://images.pexels.com/photos/1583339/pexels-photo-1583339.jpeg?auto=compress&cs=tinysrgb&w=800"
-                alt="Fort Architecture"
+                alt="Heritage Architecture"
                 className="rounded-2xl shadow-2xl"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-orange-900/20 to-transparent rounded-2xl" />
@@ -230,15 +235,26 @@ export default function LandingPage({ onStartExploration }: LandingPageProps) {
             Ready to Explore?
           </h2>
           <p className="text-xl text-orange-100 mb-8">
-            Begin your virtual journey through India's most magnificent forts and discover centuries of history and architecture.
+            Begin your virtual journey through India's most magnificent heritage sites and discover centuries of history and architecture.
           </p>
-          <button
-            onClick={onStartExploration}
-            className="bg-white text-orange-600 px-8 py-4 rounded-xl hover:bg-gray-50 transition-all duration-200 shadow-xl font-semibold text-lg flex items-center mx-auto group"
-          >
-            Start Your Virtual Tour
-            <ArrowRight className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform" />
-          </button>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button
+              onClick={onStartTajMahal}
+              className="bg-white text-orange-600 px-8 py-4 rounded-xl hover:bg-gray-50 transition-all duration-200 shadow-xl font-semibold text-lg flex items-center justify-center group"
+            >
+              <Camera className="h-5 w-5 mr-2" />
+              Taj Mahal Street View
+              <ArrowRight className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform" />
+            </button>
+            <button
+              onClick={onStartExploration}
+              className="bg-amber-500 text-white px-8 py-4 rounded-xl hover:bg-amber-600 transition-all duration-200 shadow-xl font-semibold text-lg flex items-center justify-center group"
+            >
+              <Play className="h-5 w-5 mr-2" />
+              Fort Virtual Tour
+              <ArrowRight className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform" />
+            </button>
+          </div>
         </div>
       </section>
 
@@ -251,12 +267,12 @@ export default function LandingPage({ onStartExploration }: LandingPageProps) {
                 <Eye className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h3 className="font-bold">Fort Explorer</h3>
+                <h3 className="font-bold">Heritage Explorer</h3>
                 <p className="text-sm text-gray-400">Virtual Heritage Experience</p>
               </div>
             </div>
             <p className="text-gray-400 text-sm">
-              © 2025 Fort Explorer. Preserving heritage through technology.
+              © 2025 Heritage Explorer. Preserving heritage through technology.
             </p>
           </div>
         </div>
