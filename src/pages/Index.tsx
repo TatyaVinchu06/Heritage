@@ -181,10 +181,10 @@ export default function Index() {
               transition={{ duration: 1, delay: 2.5 }}
             >
               {[
-                { icon: Eye, label: "AR Experiences", value: 50000, suffix: "+", color: "text-blue-300" },
-                { icon: MapPin, label: "Heritage Sites", value: 25, suffix: "", color: "text-green-300" },
-                { icon: Award, label: "UNESCO Sites", value: 12, suffix: "", color: "text-yellow-300" },
-                { icon: Clock, label: "VR Content Hours", value: 100, suffix: "+", color: "text-purple-300" }
+                { icon: Eye, label: "AR Experiences", value: 0, suffix: "+", color: "text-blue-300" },
+                { icon: MapPin, label: "Heritage Sites", value: 2, suffix: "", color: "text-green-300" },
+                { icon: Award, label: "UNESCO Sites", value: 2, suffix: "", color: "text-yellow-300" },
+                { icon: Clock, label: "VR Content Hours", value: 0, suffix: "+", color: "text-purple-300" }
               ].map((stat, index) => (
                 <motion.div 
                   key={stat.label}
