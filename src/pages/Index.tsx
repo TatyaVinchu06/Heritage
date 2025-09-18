@@ -169,20 +169,7 @@ export default function Index() {
                     Start AR Experience
                   </Button>
                 </motion.div>
-                
-                <motion.div
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Button 
-                    size="lg" 
-                    variant="outline"
-                    className="px-8 py-5 text-lg font-bold rounded-2xl shadow-2xl bg-white/10 backdrop-blur-sm border-white/30 text-white hover:bg-white/20"
-                  >
-                    <Play className="w-6 h-6 mr-2" />
-                    Watch Demo
-                  </Button>
-                </motion.div>
+
               </motion.div>
             </motion.div>
 
