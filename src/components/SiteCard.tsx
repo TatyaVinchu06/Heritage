@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { MapPin, Clock, Eye, Star, ArrowRight, Zap } from 'lucide-react';
 import { HeritageSite } from '@/types/heritage';
-import Viewer3D from './Viewer3D';
+import StreetViewer from './StreetViewer';
 
 interface SiteCardProps {
   site: HeritageSite;
@@ -13,14 +13,14 @@ interface SiteCardProps {
 
 export default function SiteCard({ site }: SiteCardProps) {
   const [isHovered, setIsHovered] = useState(false);
-  const [show3DViewer, setShow3DViewer] = useState(false);
+  const [showStreetViewer, setShowStreetViewer] = useState(false);
 
-  const handle3DExplore = () => {
-    setShow3DViewer(true);
+  const handleStreetViewExplore = () => {
+    setShowStreetViewer(true);
   };
 
-  const close3DViewer = () => {
-    setShow3DViewer(false);
+  const closeStreetViewer = () => {
+    setShowStreetViewer(false);
   };
 
   return (
@@ -91,7 +91,7 @@ export default function SiteCard({ site }: SiteCardProps) {
                 className="w-14 h-14 bg-gradient-to-r from-blue-500 via-purple-600 to-indigo-600 rounded-full flex items-center justify-center shadow-2xl cursor-pointer border-2 border-white/20"
                 whileHover={{ scale: 1.15, rotate: 10, boxShadow: "0 0 30px rgba(99, 102, 241, 0.6)" }}
                 whileTap={{ scale: 0.95 }}
-                onClick={handle3DExplore}
+                onClick={handleStreetViewExplore}
               >
                 <Zap className="w-6 h-6 text-white" />
               </motion.div>
@@ -114,7 +114,7 @@ export default function SiteCard({ site }: SiteCardProps) {
                 transition={{ delay: 0.5, duration: 0.6 }}
               >
                 <MapPin className="w-4 h-4 mr-1" />
-                {site.location.city}, {site.location.state}
+                {site.location.address}
               </motion.div>
             </div>
           </div>
@@ -151,9 +151,9 @@ export default function SiteCard({ site }: SiteCardProps) {
                 <div className="flex items-center text-sm text-blue-300 bg-blue-900/40 rounded-xl p-3 backdrop-blur-sm">
                   <Eye className="w-4 h-4 mr-2" />
                   <div>
-                    <div className="font-medium text-blue-200">3D Experience</div>
+                    <div className="font-medium text-blue-200">Street View</div>
                     <div className="text-xs text-blue-300">
-                      Interactive AR/VR
+                      Interactive Street View
                     </div>
                   </div>
                 </div>
@@ -167,7 +167,7 @@ export default function SiteCard({ site }: SiteCardProps) {
               transition={{ delay: 0.8, duration: 0.6 }}
             >
               <Button 
-                onClick={handle3DExplore}
+                onClick={handleStreetViewExplore}
                 className="w-full group relative overflow-hidden bg-gradient-to-r from-orange-600 via-red-600 to-pink-600 hover:from-orange-700 hover:via-red-700 hover:to-pink-700 text-white font-semibold py-4 rounded-2xl shadow-2xl border-0 transition-all duration-300"
               >
                 <motion.div
@@ -176,7 +176,7 @@ export default function SiteCard({ site }: SiteCardProps) {
                   transition={{ duration: 0.2 }}
                 >
                   <Zap className="w-5 h-5 mr-2" />
-                  <span className="text-lg">Explore in 3D/AR</span>
+                  <span className="text-lg">Explore Street View</span>
                   <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
                 </motion.div>
                 
@@ -192,9 +192,9 @@ export default function SiteCard({ site }: SiteCardProps) {
         </Card>
       </motion.div>
 
-      {/* 3D Viewer Modal */}
-      {show3DViewer && (
-        <Viewer3D site={site} onClose={close3DViewer} />
+      {/* Street Viewer Modal */}
+      {showStreetViewer && (
+        <StreetViewer site={site} onClose={closeStreetViewer} />
       )}
     </>
   );
