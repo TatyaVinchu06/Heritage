@@ -76,11 +76,6 @@
   overflow: hidden;
 }
 
-/* 3D viewer specific styles */
-canvas {
-  outline: none;
-}
-
 /* Smooth transitions for UI elements */
 .transition-all {
   transition-property: all;
@@ -109,34 +104,7 @@ canvas {
   }
 }
 
-/* Heritage site specific gradients */
-.taj-gradient {
-  background: linear-gradient(135deg, #f8f8ff 0%, #e6e6fa 100%);
-}
 
-.fort-gradient {
-  background: linear-gradient(135deg, #8b4513 0%, #a0522d 100%);
-}
-
-/* Hotspot pulse animation */
-@keyframes hotspot-pulse {
-  0% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  50% {
-    transform: scale(1.1);
-    opacity: 0.8;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-.hotspot-pulse {
-  animation: hotspot-pulse 2s ease-in-out infinite;
-}
 
 /* Audio player styles */
 .audio-player-shadow {
