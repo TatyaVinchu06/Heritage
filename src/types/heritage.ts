@@ -1,3 +1,4 @@
+
 // Core types for Heritage Explorer MVP
 export interface Vector3 {
   x: number;
@@ -9,34 +10,23 @@ export interface HeritageSite {
   id: string;
   name: string;
   location: {
-    latitude: number;
-    longitude: number;
-    address: string;
+    city: string;
     state: string;
+    coordinates: { lat: number; lng: number };
   };
   description: string;
   historicalPeriod: string;
-  significance: string;
-  imageUrl: string;
   thumbnailUrl: string;
-  model3D: {
-    lowRes: string;
-    medRes: string;
-    highRes: string;
-  };
   viewpoints: Viewpoint[];
-  hotspots: Hotspot[];
   audioTour?: AudioTour;
 }
 
 export interface Viewpoint {
   id: string;
   position: Vector3;
-  rotation: Vector3;
   name: string;
   description?: string;
-  isDefault: boolean;
-  connections: string[]; // IDs of connected viewpoints
+  hotspots?: Hotspot[];
 }
 
 export interface Hotspot {
@@ -44,12 +34,7 @@ export interface Hotspot {
   position: Vector3;
   type: 'info' | 'audio' | 'image';
   title: string;
-  content: {
-    text?: string;
-    imageUrl?: string;
-    audioUrl?: string;
-  };
-  visibility: boolean;
+  content: string;
 }
 
 export interface AudioTour {
